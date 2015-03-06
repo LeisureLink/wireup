@@ -16,7 +16,7 @@ Nodejs's `require` can be thought of as a module's _self-initialization_, or bet
 
 # How
 
-There are three parts to using `wireup` effectively:
+There are four parts to using `wireup` effectively:
 
 * Understand it, then,
 * determine your strategy,
