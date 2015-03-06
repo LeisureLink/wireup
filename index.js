@@ -1,6 +1,5 @@
 'use strict';
 
-var assert = require('assert-plus');
 var util = require('util');
 var path = require('path');
 
@@ -8,38 +7,53 @@ var _root;
 var _args = [];
 var _def;
 
-function Wireup(dir) {
-  this._dir = dir;
+function wireup(args, dir, mod) {
+  var aa;
+  if (typeof(mod) === 'string') {
+    if (mod[0] === '.') {
+      mod = path.normalize(path.join(dir, mod));
+    }
+    mod = require(mod);
+  }
+  if (typeof(mod.wireup) === 'function') {
+    if (arguments.length > 3) {
+      aa = args.concat(Array.prototype.slice.call(arguments, 3));
+    }
+    mod.wireup.apply(mod, aa || args);
+  }
+  return mod;
 }
 
-Wireup.prototype.wireup = function wireup(mod, rootRelative) {
-  assert.string(mod, 'mod');
-  assert.ok(mod.length, 'mod cannot be empty');
-  if (mod[0] === '.') {
-    var where = (rootRelative && _root) ? _root : this._dir;
-    assert.string(where, 'could not calculate base path');
-    mod = path.normalize(path.join(where, mod));
+function instructional() {
+  if (instructional.root) {
+    throw new Error('wireup`s #root function must be called to root to your app.');
   }
-  var m = require(mod);
-  if (typeof(m.wireup) === 'function') {
-    m.wireup.apply(m, _args);
+  throw new Error('wireup`s #dir function must be called so wireup can work with relative files.');
+}
+
+instructional.root = function root(dir) {
+  if (!dir) {
+    throw new Error('root directory must be specified');
   }
-  return m;
-};
-
-_def = new Wireup();
-var exp = module.exports = _def.wireup.bind(_def);
-
-exp.root = function root(dir, args) {
-  assert.string(dir, 'dir');
-  assert.ok(!_root, 'root is already assigned');
   _root = dir;
-  _args = Array.isArray(args) ? args : [args];
-  var sub = new Wireup(dir);
-  return sub.wireup.bind(sub);
+  delete instructional.root; // app is rooted only once.
+  if (arguments.length > 1) {
+    _args = Array.prototype.slice.call(arguments, 1);
+  }
+  return wireup.bind(null, _args, dir);
 };
-exp.dir = function dir(dir) {
-  assert.string(dir, 'dir');
-  var sub = new Wireup(dir);
-  return sub.wireup.bind(sub);
+
+instructional.dir = function dir(dir) {
+  if (!dir) {
+    throw new Error('directory must be specified');
+  }
+  var aa = (arguments.length > 1) ?
+    _args.concat(Array.prototype.slice.call(arguments, 1)) : _args;
+  var bound = wireup.bind(null, aa, dir);
+  bound.rootRelative = wireup.bind(null, aa, _root);
+  return bound;
 };
+
+module.exports = instructional;
+
+
