@@ -10,9 +10,9 @@ When a nodejs module is imported via node's `require` method, node goes through 
 
 OK, that was a simple explanation. For most modules, nothing else is needed.
 
-What nodejs does during a `require` can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_.
+Nodejs's `require` can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_.
 
-What `wireup` provides is a means by which modules can specify an optional, _explicit-wireup_.
+`wireup` provides is a means by which modules can specify an optional, _explicit-wireup_.
 
 # How
 
