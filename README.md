@@ -10,7 +10,7 @@ When a nodejs module is imported via node's `require` method, node goes through 
 
 OK, that was a simple explanation. For most modules, nothing else is needed.
 
-Nodejs's `require` can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_.
+Nodejs' `require` can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_.
 
 `wireup` provides is a means by which modules can specify an optional, _explicit-wireup_.
 
@@ -25,11 +25,11 @@ There are four parts to using `wireup` effectively:
 
 ## Understand it
 
-`wireup` is a simple wrapper for nodejs' `require` function. For each module that you _wire up_, `wireup` looks for an exported function called "wireup" and if found, immediately calls it. Admittedly, this behavior on its own does little to improve on the _implicit-wireup_ that already happens when you `require` a module. The improvement comes in when you choose to _project_ arguments into the module's wireup function.
+`wireup` is a simple wrapper for nodejs' `require` function. For each module that you _wire up_, `wireup` looks for an exported function called "wireup" and if found, immediately calls it. Admittedly, this behavior on its own does little to improve on the _implicit-wireup_ that already happens. The improvement comes in when you choose to _inject_ arguments into the module's wireup function.
 
 ### Basics
 
-You can project variables (such as a config object) into the modules' `#wireup` methods as they are imported into your app:
+You can inject variables (such as a config object) into the modules' `#wireup` method as the modules are imported into your app:
 
 ```javascript
 // this ->                                     vvvvvv
