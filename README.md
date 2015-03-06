@@ -53,7 +53,7 @@ There are more advanced uses documented later.
 
 We've mentioned that `wireup` is _convention-based_. In actuality, it is half of the convention, the second half is up to you. We definitely don't know as much about your app as you do, so feel free to make up a strategy that makes sense to your community of users.
 
-The [basic example](#basics) illustrates a simple but effective strategy which formalizes a convention for the app; each module's `#wireup` function will expect a single argument to be passed in -- the _config_ object.
+The [basic example](#user-content-basics) illustrates a simple but effective strategy which formalizes a convention for the app; each module's `#wireup` function will expect a single argument to be passed in -- the _config_ object.
 
 You can make up a different strategy, thus formalizing the convention that makes sense to you.
 
