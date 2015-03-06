@@ -18,10 +18,10 @@ Nodejs' `require` can be thought of as a module's _self-initialization_, or bett
 
 There are four parts to using `wireup` effectively:
 
-* Understand it, then,
-* determine your strategy,
-* wireup enable modules,
-* and use wireup in your app.
+* [Understand it](#user-content-understand-it), then,
+* [determine your strategy](#user-content-determine-your-strategy),
+* [wireup enable modules](#user-content-wireup-enable-modules),
+* and [use wireup in your app](#user-content-use-wireup-in-your-app).
 
 ## Understand it
 
@@ -55,7 +55,7 @@ We've mentioned that `wireup` is _convention-based_. In actuality, it is half of
 
 The [basic example](#basics) illustrates a simple but effective strategy which formalizes a convention for the app; each module's `#wireup` function will expect a single argument to be passed in -- the _config_ object.
 
-You can make up a different strategy, thus formalizing the convention that makes sense for your app.
+You can make up a different strategy, thus formalizing the convention that makes sense to you.
 
 ## Wireup Enable Modules
 
