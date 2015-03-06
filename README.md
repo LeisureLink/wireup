@@ -6,11 +6,11 @@ A bootstrap time, convention-based utility for wiring up modules into an app (no
 
 `wireup` introduces a simple, optional `wireup` step that applications can use to build a predictable startup process.
 
-When a nodejs module is imported via node's `require` method, node goes through a process of loading the module. A synopsis of what happens when node _loads_ a module is that it reads the module from disk if the requested module doesn't match a module already loaded and cached. When the module is indeed read from disk, node places the module in its a new function scope and invokes the module so that it may initialize its dependencies, perform startup logic, and export things other modules rely upon.
+When a nodejs module is imported via node's `require` method, node goes through a process of loading the module. A synopsis of what happens when node _loads_ a module is that it reads the module from disk if the requested module doesn't match a module already loaded and cached. When the module is indeed read from disk, node places the module in a new function scope and invokes the module so that it may initialize its dependencies, perform startup logic, and export things other modules rely upon.
 
 OK, that was a simple explanation. For most modules, nothing else is needed.
 
-What nodejs does can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_. What `wireup` provides is a means by which modules can specify an optional, _explicit-wireup_.
+What nodejs does during a ```require``` can be thought of as a module's _self-initialization_, or better yet; _implicit-wireup_. What `wireup` provides is a means by which modules can specify an optional, _explicit-wireup_.
 
 # How
 
