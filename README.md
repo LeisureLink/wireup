@@ -111,11 +111,11 @@ var subordinate = wireup('./subordinate');
 
 ### Guidelines & Advice for Easy Wireup
 
-Since `wireup` is able to inject arguments into a wired module's exported `#wireup` method, you will find that a consistent function signature is key. The best advise we can give is that you should try to limit the variance between the exported functions' signatures.
+Since `wireup` is able to inject arguments into a wired module's exported `#wireup` method, you will find that a consistent function signature is key. We encourage you to limit the variance between the exported functions' signatures.
 
 If you use an IoC, your IoC container makes a great candidate to pass along the wireup chain. Another great candidate is a top-level config object, like an [`nconf`](https://github.com/flatiron/nconf) instance.
 
-If at all possible, make the wireup argument binding in the call to `#root` the wireup module and try not to use advanced binding if possible.
+If at all possible, bind the wireup arguments in the `#root` wireup call. Since advanced binding appends wireup arguments but never removes previously bound arguments, we recommend using advanced binding only where absolutely necessary.
 
 ### Advanced Binding
 
