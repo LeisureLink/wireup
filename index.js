@@ -55,5 +55,3 @@ instructional.dir = function dir(dir) {
 };
 
 module.exports = instructional;
-
-
