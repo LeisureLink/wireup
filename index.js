@@ -3,7 +3,8 @@
 var util = require('util');
 var path = require('path');
 
-function WireupContext(parent, a) {
+function WireupContext(loader, parent, a) {
+  var _loader = loader;
   var _args = a || [];
   var _local;
   var _dir;
@@ -31,6 +32,11 @@ function WireupContext(parent, a) {
     }
     return wireup;
   }
+
+  function setLoader(loader) {
+    _loader = loader;
+    return wireup;
+  }
   Object.defineProperties(this, {
     invoke: {
       value: function invoke(target) {
@@ -38,16 +44,19 @@ function WireupContext(parent, a) {
         var aa = (arguments.length > 1) ?
           args.concat(Array.prototype.slice.call(arguments, 1)) :
           args;
-        var cx = new WireupContext(this, args);
+        var cx = new WireupContext(_loader, this, args);
         target.apply(cx, aa);
       }
     },
-    makeRelative: {
-      value: function makeRelative(file) {
-        if (!_dir) {
-          throw new Error('wireup`s #dir function must be called so wireup can work with relative files.');
+    loadModule: {
+      value: function loadModule(file) {
+        if (file[0] === '.') {
+          if (!_dir) {
+            throw new Error('wireup`s #dir function must be called so wireup can work with relative files.');
+          }
+          file = path.normalize(path.join(_dir, file));
         }
-        return path.normalize(path.join(_dir, file));
+        return _loader(file);
       },
       enumerable: true
     },
@@ -62,6 +71,10 @@ function WireupContext(parent, a) {
       value: setArgs,
       enumerable: true
     },
+    loader: {
+      value: setLoader,
+      enumerable: true
+    },
     dir: {
       value: setDir,
       enumerable: true
@@ -69,16 +82,14 @@ function WireupContext(parent, a) {
   });
   wireup.args = setArgs;
   wireup.dir = setDir;
+  wireup.loader = setLoader;
   this.wireup = wireup;
 }
 
 WireupContext.prototype.wireup = function wireup(mod) {
   var args = Array.prototype.slice.call(arguments);
   if (typeof(mod) === 'string') {
-    if (mod[0] === '.') {
-      mod = this.makeRelative(mod);
-    }
-    mod = require(mod);
+    mod = this.loadModule(mod);
   }
   if (typeof(mod.wireup) === 'function') {
     args[0] = mod.wireup;
@@ -87,5 +98,5 @@ WireupContext.prototype.wireup = function wireup(mod) {
   return mod;
 };
 
-var _root = new WireupContext();
+var _root = new WireupContext(require, null, null);
 module.exports = _root.wireup;
