@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-var wireup = require('../').root(__dirname);
+var wireup = require('../').dir(__dirname);
 var jsonify = wireup('./jsonify', true, 1);
 
 var data = {

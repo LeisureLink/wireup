@@ -13,7 +13,7 @@ module.exports = function possiblyElidedJsonify(obj) {
     );
 };
 
-module.exports.wireup = function wireup(show, elid) {
+module.exports.wireup = function (show, elid) {
   util.log(util.format('show: %s', show));
   util.log(util.format('elid: %s', elid));
   _show_the_privates = show;

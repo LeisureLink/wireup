@@ -33,7 +33,7 @@ You can inject variables (such as a config object) into the modules' `#wireup` m
 
 ```javascript
 // this ->                                     vvvvvv
-var wireup = require('wireup').root(__dirname, config);
+var wireup = require('wireup').dir(__dirname, config);
 
 // Notice we're using wireup to import the modules, not require:
 
@@ -71,7 +71,7 @@ var _localConfig = {
 
 // other module details elided...
 
-module.exports.wireup = function wireup(config) {
+module.exports.wireup = function (config) {
   // when/if wireup is called, overlay our default config...
   _localConfig = util._extend(_localConfig, config);
 };
@@ -83,12 +83,12 @@ The [basic example](#basics) has already shown how to use `wireup` in your app. 
 
 ### In your app's root module:
 
-Your app's root module must call wireup's `#root` method to specify your app's root directory \[[more info](#how-modules-are-resolved)\].
+Your app's root module, call wireup's `#dir` method to specify your app's root directory \[[more info](#how-modules-are-resolved)\].
 
 ```javascript
 //...
 
-var wireup = require('wireup').root(__dirname);
+var wireup = require('wireup').dir(__dirname);
 
 var lib = wireup('./lib');
 
@@ -97,25 +97,15 @@ var lib = wireup('./lib');
 
 ### In your app's other modules:
 
-If other modules in your app import `wireup`, they should call wireup's `#dir' method to specify their directory \[[more info](#how-modules-are-resolved)\].
-
-```javascript
-//...
-
-var wireup = require('wireup').dir(__dirname);
-
-var subordinate = wireup('./subordinate');
-
-//...
-```
+Other modules _should not_ import `wireup`. If they need to be participate in the wireup process, they should export a function with the name `wireup` [as illustrated above](#user-content-wireup-enable-modules).
 
 ### Guidelines & Advice for Easy Wireup
 
-Since `wireup` is able to inject arguments into a wired module's exported `#wireup` method, you will find that a consistent function signature is key. We encourage you to limit the variance between the exported functions' signatures.
+Since `wireup` is able to inject arguments into a wired module's exported `#wireup` method, the process is simpler if you use a consistent signature for your module's exported `#wireup` methods.
 
 If you use an IoC, your IoC container makes a great candidate to pass along the wireup chain. Another great candidate is a top-level config object, like an [`nconf`](https://github.com/flatiron/nconf) instance.
 
-If at all possible, bind the wireup arguments in the `#root` wireup call. Since advanced binding appends wireup arguments but never removes previously bound arguments, we recommend using advanced binding only where absolutely necessary.
+If at all possible, bind the wireup arguments in your application's entrypoint module. Since advanced binding appends wireup arguments but never removes previously bound arguments, we recommend using advanced binding only where absolutely necessary since it can make troubleshooting difficult when you've been away from your app for a while.
 
 ### Advanced Binding
 

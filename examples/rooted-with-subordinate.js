@@ -3,7 +3,7 @@
 
 var util = require('util');
 
-var wireup = require('../').root(__dirname);
+var wireup = require('../').dir(__dirname);
 
 var sub = wireup('./subs/wires-up-root-relative');
 

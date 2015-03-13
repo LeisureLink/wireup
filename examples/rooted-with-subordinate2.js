@@ -3,8 +3,8 @@
 
 var util = require('util');
 
-// this ->                                  vvvvv
-var wireup = require('../').root(__dirname, false);
+// this ->                                 vvvvv
+var wireup = require('../').dir(__dirname, false);
 
 // is implied here ->                             v
 var sub = wireup('./subs/module-adds-arg-to-wireup');
