@@ -33,6 +33,10 @@ function WireupContext(loader, parent, a) {
     return wireup;
   }
 
+  function rootRelative() {
+    return _root.wireup.apply(_root, Array.prototype.slice.call(arguments));
+  }
+
   function setLoader(loader) {
     _loader = loader;
     return wireup;
@@ -61,9 +65,7 @@ function WireupContext(loader, parent, a) {
       enumerable: true
     },
     rootRelative: {
-      value: function rootRelative() {
-        return _root.wireup.apply(_root, Array.prototype.slice.call(arguments));
-      },
+      value: rootRelative,
       enumerable: true
     },
 
@@ -83,6 +85,7 @@ function WireupContext(loader, parent, a) {
   wireup.args = setArgs;
   wireup.dir = setDir;
   wireup.loader = setLoader;
+  wireup.rootRelative = rootRelative;
   this.wireup = wireup;
 }
 
@@ -90,6 +93,10 @@ WireupContext.prototype.wireup = function wireup(mod) {
   var args = Array.prototype.slice.call(arguments);
   if (typeof(mod) === 'string') {
     mod = this.loadModule(mod);
+  }
+  if (typeof(mod) === 'function') {
+    args[0] = mod;
+    return this.invoke.apply(this, args);
   }
   if (typeof(mod.wireup) === 'function') {
     args[0] = mod.wireup;

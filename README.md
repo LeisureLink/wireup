@@ -32,7 +32,7 @@ There are four parts to using `wireup` effectively:
 You can inject variables (such as a config object) into the modules' `#wireup` method as the modules are imported into your app:
 
 ```javascript
-// this ->                                     vvvvvv
+// this ->                                    vvvvvv
 var wireup = require('wireup').dir(__dirname, config);
 
 // Notice we're using wireup to import the modules, not require:
