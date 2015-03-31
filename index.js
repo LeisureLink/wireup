@@ -91,12 +91,12 @@ function WireupContext(loader, parent, a) {
 
 WireupContext.prototype.wireup = function wireup(mod) {
   var args = Array.prototype.slice.call(arguments);
-  if (typeof(mod) === 'string') {
-    mod = this.loadModule(mod);
-  }
   if (typeof(mod) === 'function') {
     args[0] = mod;
     return this.invoke.apply(this, args);
+  }
+  if (typeof(mod) === 'string') {
+    mod = this.loadModule(mod);
   }
   if (typeof(mod.wireup) === 'function') {
     args[0] = mod.wireup;
