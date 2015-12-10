@@ -1,6 +1,6 @@
 {
   "name": "@leisurelink/wireup",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A bootstrap time, convention-based utility for wiring up modules into an app (nodejs).",
   "main": "index.js",
   "scripts": {
